@@ -3,4 +3,3 @@ str = "Python is an interpreted, interactive, object-oriented programming langua
 print(
     str[39:67] + str[107:112] + str[:6]
 )
-
