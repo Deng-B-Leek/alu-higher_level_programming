@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Define a class Square."""
 
+
 class Square:
     """Represent a square."""
 
@@ -15,11 +16,13 @@ class Square:
         self.position = position
 
     @property
+
     def size(self):
         """Get/set the current size of the square."""
         return (self.__size)
 
     @size.setter
+
     def size(self, value):
         if not isinstance(value, int):
             raise TypeError("size must be an integer")
@@ -28,11 +31,13 @@ class Square:
         self.__size = value
 
     @property
+
     def position(self):
         """Get/set the current position of the square."""
         return (self.__position)
 
     @position.setter
+
     def position(self, value):
         if (not isinstance(value, tuple) or
                 len(value) != 2 or
