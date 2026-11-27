@@ -7,6 +7,8 @@
 100
 >>> add_integer(100.3, -2)
 98
+>>> add_integer(100.3, 2.7)
+102
 >>> add_integer(4, "School")
 Traceback (most recent call last):
 ...
@@ -15,3 +17,19 @@ TypeError: b must be an integer
 Traceback (most recent call last):
 ...
 TypeError: a must be an integer
+>>> add_integer(float('inf'), 1)
+Traceback (most recent call last):
+...
+OverflowError: cannot convert float infinity to integer
+>>> add_integer(1, float('inf'))
+Traceback (most recent call last):
+...
+OverflowError: cannot convert float infinity to integer
+>>> add_integer(float('nan'))
+Traceback (most recent call last):
+...
+ValueError: cannot convert float NaN to integer
+>>> add_integer(1, float('nan'))
+Traceback (most recent call last):
+...
+ValueError: cannot convert float NaN to integer
