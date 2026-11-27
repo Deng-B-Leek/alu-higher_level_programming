@@ -4,6 +4,7 @@
 import json
 import os
 
+
 class Base:
     """Base class for all models."""
 
