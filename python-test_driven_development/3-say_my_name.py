@@ -4,6 +4,7 @@ Prints a name in the format My name is <first> <last>.
 Validates that names are strings.
 """
 
+
 def say_my_name(first_name, last_name=""):
     """Print My name is <first name> <last name>."""
     if not isinstance(first_name, str):
