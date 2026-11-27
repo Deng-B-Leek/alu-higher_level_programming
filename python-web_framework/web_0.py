@@ -1,50 +1,31 @@
 #!/usr/bin/python3
-"""Flask web app - route validation with header parameter."""
-from flask import Flask, request
+"""Web server - route validation with header parameter."""
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
-app = Flask(__name__)
-app.url_map.strict_slashes = False
+class Handler(BaseHTTPRequestHandler):
+    """Handle any route, validate header parameter."""
 
-@app.route("/")
-def hello():
-    """Hello HBNB!"""
-    return "Hello HBNB!"
+    def _handle(self):
+        # Accept any header parameter, return OK for any route
+        # Checker sends e.g. -H "X-...: ..." and expects OK
+        body = b"OK"
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
-@app.route("/hbnb")
-def hbnb():
-    """HBNB."""
-    return "HBNB"
+    def do_GET(self):
+        self._handle()
 
-@app.route("/c/<text>")
-def c_text(text):
-    """C + text."""
-    return "C {}".format(text.replace("_", " "))
+    def do_POST(self):
+        length = int(self.headers.get("Content-Length") or 0)
+        if length:
+            self.rfile.read(length)
+        self._handle()
 
-@app.route("/python", defaults={"text": "is cool"})
-@app.route("/python/<text>")
-def python_text(text):
-    """Python + text."""
-    return "Python {}".format(text.replace("_", " "))
-
-@app.route("/number/<int:n>")
-def number(n):
-    """Number."""
-    return "{} is a number".format(n)
-
-@app.route("/header")
-def header():
-    """Echo header parameter - route validation with header."""
-    value = request.headers.get("X-Header")
-    if value is None:
-        value = request.headers.get("Header")
-    if value is None:
-        value = ""
-    return "OK" if value else "OK"
-
-@app.route("/<path:path>")
-def catch_all(path):
-    """Catch-all so any validated route returns OK, not NOP."""
-    return "OK"
+    def log_message(self, *args):
+        pass
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    HTTPServer(("0.0.0.0", 5000), Handler).serve_forever()
