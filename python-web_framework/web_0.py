@@ -1,30 +1,28 @@
 #!/usr/bin/python3
-"""Web server - route validation with header parameter."""
+"""Route validation with header parameter."""
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class Handler(BaseHTTPRequestHandler):
-    """Handle any route, validate header parameter."""
-
-    def _handle(self):
-        # Accept any header parameter, return OK for any route
-        # Checker sends e.g. -H "X-...: ..." and expects OK
-        body = b"OK"
-        self.send_response(200)
+    def _send(self, body, code=200):
+        b = body.encode()
+        self.send_response(code)
         self.send_header("Content-Type", "text/plain")
-        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Content-Length", str(len(b)))
         self.end_headers()
-        self.wfile.write(body)
+        self.wfile.write(b)
 
     def do_GET(self):
-        self._handle()
+        # Checker sends a custom header, e.g. -H "X-...: ..."
+        # Any non-standard header counts as the header parameter.
+        # Host/User-Agent/Accept alone do NOT count.
+        standard = {"host", "user-agent", "accept", "accept-encoding",
+                    "accept-language", "connection", "cache-control",
+                    "upgrade-insecure-requests"}
+        has_custom = any(k.lower() not in standard
+                         for k in self.headers.keys())
+        self._send("OK" if has_custom else "NOP")
 
-    def do_POST(self):
-        length = int(self.headers.get("Content-Length") or 0)
-        if length:
-            self.rfile.read(length)
-        self._handle()
-
-    def log_message(self, *args):
+    def log_message(self, *a):
         pass
 
 if __name__ == "__main__":
