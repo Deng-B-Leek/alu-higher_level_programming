@@ -5,6 +5,7 @@ Validates matrix structure and divisor type.
 Returns a new matrix with values rounded to 2 decimals.
 """
 
+
 def matrix_divided(matrix, div):
     """Divide all elements of a matrix.
     Args: matrix and div.
