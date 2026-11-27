@@ -4,6 +4,7 @@ Prints a square of # characters.
 Validates size type and value.
 """
 
+
 def print_square(size):
     """Print a square with #."""
     if not isinstance(size, int):
