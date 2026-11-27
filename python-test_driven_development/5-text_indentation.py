@@ -4,6 +4,7 @@ Prints text with 2 new lines after ., ? and :.
 Strips spaces at start/end of each printed line.
 """
 
+
 def text_indentation(text):
     """Print text with 2 new lines after ., ? and :."""
     if not isinstance(text, str):
